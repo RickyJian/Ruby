@@ -56,5 +56,6 @@
     >> + title :string //String ==> varchar
     >> + content:text //text ==> text
     >> + price:integer
+    >
 9. rails db:migrate // 建立 db table
 10.  rails d scaffold Book //刪除
