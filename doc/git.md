@@ -41,3 +41,10 @@
 ###gitHub
 1. git remote add origin  https://github.com/RickyJian/projectName.git   //將專案從本地端推進gitHub
 2. git push -u origin master//將專案從本地端推進gitHub
+
+##0310
+###Codeanywhere
+1. ruby get master
+2. rvm install 2.3 // 2.3 : version
+3. rvm ues 2.3.3 --default // 預設版本
+
