@@ -52,7 +52,10 @@
 6. cd projectName
 7. rails server -b 0.0.0.0 (or) rails s -b 0.0.0.0
 8. rails generate (or) g scaffold Book
-    > *db table* table name 為 Book 但 url 為 .../books
-    >
+> *db table* table name 為 Book 但 url 為 .../books
+>> + title :string //String ==> varchar
+>> + content:text //text ==> text
+>> + price:integer
+>
 9. rails db:migrate // 建立 db table
 10.  rails d scaffold Book //刪除
