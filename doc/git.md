@@ -1,7 +1,7 @@
-#**RUBY**
+# **RUBY**
 
-##02/24<br>
-###git
+## 02/24<br>
+### git
 1. mkdir hello
 2. cd hello
 3. git init //初始git
@@ -17,7 +17,7 @@
 13.git log -p Filename
 14. git blame Filename //檔案逐行log
 
-##03/03
+## 03/03
 1. git branch //看分支
 2. git branch branchName //新建分支
 3. git checkout //選分支
@@ -38,12 +38,12 @@
 19. git push -f //以我為主(蓋板)  ##別用
 
 
-###gitHub
+### gitHub
 1. git remote add origin  https://github.com/RickyJian/projectName.git   //將專案從本地端推進gitHub
 2. git push -u origin master//將專案從本地端推進gitHub
 
-##0310
-###Codeanywhere
+## 0310
+### Codeanywhere
 1. ruby get master
 2. rvm install 2.3 // 2.3 : version
 3. rvm ues 2.3.3 --default // 預設版本
@@ -56,5 +56,36 @@
     >+ title :string //String ==> varchar
     >+ content:text //text ==> text
     >+ price:integer
+
 9. rails db:migrate // 建立 db table
 10.  rails d scaffold Book //刪除
+
+## 0331
+1. ruby get master
+2. rvm install 2.4
+3. rvm use 2.4.1 --default
+4. gem install rails
+5. rails -v
+6. rails new myVote // myVote project name
+7. cd myVote // myVote project name
+8. rails routes //  看底層路徑
+9. rails server -b 0.0.0.0
+
+### (Controller) candidates_controller.rb
+```
+class CandidatesController < ApplicationController
+  def index
+
+  end
+end
+```
+
+### (View) index.htnl.erb
+
+```
+<h1>
+  hello!!
+</h1>
+
+<%= [1,2,3,4,5,6].sample %>
+```
