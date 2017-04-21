@@ -37,6 +37,8 @@
 18. pick → e 編輯
 19. git push -f //以我為主(蓋板)  ##別用
 
+### 4/21
+> UJS
 
 ### gitHub
 1. git remote add origin  https://github.com/RickyJian/projectName.git   //將專案從本地端推進gitHub
@@ -80,7 +82,7 @@ class CandidatesController < ApplicationController
 end
 ```
 
-### (View) index.htnl.erb
+### (View) index.html.erb
 
 ```
 <h1>
@@ -88,4 +90,149 @@ end
 </h1>
 
 <%= [1,2,3,4,5,6].sample %>
+```
+## 0407
+1. cd myVote
+2. rails routes
+3. rails g migration add_candidates
+4. rails db:migrate // db做migrate
+
+### (View) index.html.erb
+```
+<h1>Candidate List</h1>
+
+<%= link_to "add candidate" , new_candidate_path %>
+ //超連結用
+
+```
+### (Controller) candidates_controller.rb
+```
+class CandidatesController < ApplicationController
+  def index
+
+  end
+  def new
+
+  end
+end
+```
+
+### (View) new.html.erb
+```
+<h1>
+  New Candidate
+</h1>
+
+```
+
+```
+class AddCandidates < ActiveRecord::Migration[5.0]
+  def change
+    create_table :candidates do |t|
+      t.string :name
+      t.string :party
+      t.integer :age
+      t.text :politics
+      t.integer :votes , default: 0
+      timestamps // 自動增加 update 以及 createDate
+    end
+  end
+end
+```
+## 0414
+1. rails console
+2. Candidate.find_by(id: 1)
+
+### (Model) candidate.rb
+
+```
+  validates :name, presence: true  ##驗證欄位 name
+```
+###
+```
+def create
+     #clean_params = params.required("candidate").permit(:name , :party , :age , :politics)  # 允許欄位從前端傳到端
+     @candidate = Candidate.new(candidate_params)
+     if @candidate.save
+        redirect_to candidates_path
+     else
+       render 'new'  #導頁
+        #redirect_to new_candidate_path
+     end
+  end
+```
+
+### (View) new.html.erb
+```
+<h1>Candidate List</h1>
+
+<%= link_to "add candidate" , new_candidate_path %>
+<ul>
+  <% @candidates.each do |candidate| %>
+  <li><%= candidate.name %></li>
+  <li><%= link_to candidate.name, candidate_path(candidate.id) %></li>  
+  <li><%= link_to candidate.name, candidate %></li>
+  # 兩種皆可
+  <li><%= link_to "delete" , candidate , method: "delete" %></li>
+  <% end %>
+
+</ul>
+```
+
+### (Controller) CandidatesController
+
+```
+def show
+  @candidate = Candidate.find_by(id: params[:id])
+end
+
+def destroy
+  @candidate = Candidate.find_by(id: params[:id])  #找資料
+  @candidate.destroy  # 刪除
+  redirect_to candidates_path  # 回到原本頁面
+end
+```
+
+## 0420
+
+### (View) show.html.erb
+
+```
+<h1>
+  <%= @candidate.name %>
+</h1>
+
+age： <%= @candidate.age %>
+
+<br />
+
+<%= link_to "back" , candidate_path %>
+```
+
+### (Controller) CandidatesController
+
+```
+  def destroy 
+    @candidate = Candidate.find_by(id: params[:id])
+    @candidate.destroy
+    flash[:notice] = "deleted!"   ##刪除後提醒使用者
+    redirect_to candidates_path
+  end
+
+```
+
+或
+
+```
+  def destroy 
+    @candidate = Candidate.find_by(id: params[:id])
+    @candidate.destroy
+    redirect_to candidates_path , notice: "deleted!"
+  end
+```
+
+### (View) application.html.erb
+
+```
+<%= flash[:notice] %>  ##將後台的資訊顯示在前台
 ```
