@@ -236,3 +236,180 @@ age： <%= @candidate.age %>
 ```
 <%= flash[:notice] %>  ##將後台的資訊顯示在前台
 ```
+
+### (View) index.html.erb
+
+````
+<h1>Candidate List</h1>
+
+<%= link_to "add candidate" , new_candidate_path %>
+<ul>
+  <% @candidates.each do |candidate| %>
+  <li>
+      <%= link_to candidate.name, candidate %> 
+      <%= link_to "edit", edit_candidate_path(candidate) %> ##編輯
+      <%= link_to "delete" , candidate , method: "delete" , data: {confirm: 'delete?!' }  %>
+  </li>
+  
+  <% end %>
+  
+</ul>
+
+````
+
+### (Controller) CandidatesController
+
+```
+  def edit
+    @candidate = Candidate.find_by(id: params[:id])    
+    
+  end
+```
+
+### final 
+
+#### (Controller) CandidatesController
+
+```Ruby
+class CandidatesController < ApplicationController
+  
+  before_action :find_candidate , only: [:show ,:edit ,:update , :destroy]  
+  def show
+    
+  end
+  def index
+      @candidates = Candidate.all
+  end 
+  def new 
+     @candidate = Candidate.new
+  end
+  
+  def show 
+    @candidate = Candidate.find_by(id: params[:id])
+  end
+  def create
+  
+     @candidate = Candidate.new(candidate_params)
+     if @candidate.save
+        redirect_to candidates_path , notice: "success!"
+     else
+       render 'new'
+        #redirect_to new_candidate_path
+     end
+  end
+  
+  def edit
+  #  @candidate = Candidate.find_by(id: params[:id])      
+  #  redirect_to candidates_path , notice: "no data!" if  @candidate.nil? ##沒有直導回原頁面
+  end
+  
+  def update
+   # @candidate = Candidate.find_by(id: params[:id])      
+   # redirect_to candidates_path , notice: "no data!" if  @candidate.nil? ##沒有直導回原頁面
+     if @candidate.update (candidate_params) 
+        redirect_to candidates_path , notice: "updated!"
+     else
+       render 'edit'
+        #redirect_to new_candidate_path
+     end
+  end
+  
+  def destroy 
+  #  @candidate = Candidate.find_by(id: params[:id])
+    @candidate.destroy
+    redirect_to candidates_path , notice: "deleted!"
+  end
+  def candidate_params 
+  params.required("candidate").permit(:name , :party , :age , :politics)  # 允許欄位從前端傳到端
+  end
+  
+  def find_candidate
+    @candidate = Candidate.find_by(id: params[:id])      
+    redirect_to candidates_path , notice: "no data!" if  @candidate.nil? ##沒有直導回原頁面
+  end
+end
+```
+#### (View) _form.html.erb
+
+```
+<%= form_for candidate do  |f| %> ##由後端傳路 candidate
+name:  <%= f.text_field :name %></br>
+age:  <%= f.text_field :age %></br>
+party:  <%= f.text_field :party %></br>
+politics:  <%= f.text_area :politics %></br>
+<%= f.submit %></br>
+<% end %>
+```
+
+#### (View) edit.html.erb
+
+```
+<h1>
+  Edit Candidate
+</h1>
+
+<%= render 'form' , candidate: @candidate %> ##將@candidate 變數 傳路 candidate
+```
+
+#### (View) index.html.erb
+
+```
+<h1>Candidate List</h1>
+
+<%= link_to "add candidate" , new_candidate_path %>
+
+<table>
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Age</td>
+      <td>Politics</td>
+      <td></td>
+    </tr>
+  </thead>
+</table>
+
+<tbody>
+<% @candidates.each do |candidate| %>
+  <tr>
+  <td>  <%= link_to candidate.name, candidate %> </td>
+    <td> <%= candidate.age %></td>
+    <td> <%= candidate.politics %></td>
+    <td>
+      <%= link_to "edit" , edit_candidate_path(candidate) %>
+      <%= link_to "delete" , candidate , method: "delete" ,data: { confirm: 'delete' } %>
+    </td>
+    
+  </tr>
+<% end %>
+</tbody>
+```
+
+#### (View) new.html.erb
+
+```
+<h1>
+  New Candidate
+</h1>
+
+<%= form_for @candidate do  |f| %>
+name:  <%= f.text_field :name %></br>
+age:  <%= f.text_field :age %></br>
+party:  <%= f.text_field :party %></br>
+politics:  <%= f.text_area :politics %></br>
+<%= f.submit %></br>
+<% end %>
+```
+#### (View) show.html.erb
+
+```
+<h1>
+  <%= @candidate.name %>
+</h1>
+
+age： <%= @candidate.age %>
+  
+<br />
+  
+<%= link_to "back" , candidate_path %>
+```
