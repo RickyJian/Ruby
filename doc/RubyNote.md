@@ -413,3 +413,19 @@ age： <%= @candidate.age %>
   
 <%= link_to "back" , candidate_path %>
 ```
+
+### 6/02
+
+
+#### Gemfile
+
+
+
+table name | type 
+---------|----------
+ A1 | B1 
+ A2 | B2 
+ A3 | B3 
+
+* simple
+* boostrap
